@@ -1,0 +1,13 @@
+Space invaders{
+	V1{
+
+	}
+	pixelated
+
+}
+Diablo lite{
+	Few but simple spell progression
+	easy to learn hard to master
+	pixelated
+	clear an area
+}
