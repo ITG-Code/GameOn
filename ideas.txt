@@ -11,3 +11,24 @@ Diablo lite{
 	pixelated
 	clear an area
 }
+Agar.io
+Agars Snake{
+	Works like agar.io but instead of being a circle you are a line of circles
+	how to win: ?
+}
+Achtung die Snake{
+	hex grid
+	multiplayer(offline)
+	how to win: ?
+	Don't hit your head into another snakebody/yourself
+	eating{
+		alt1: eat food and the food will travel down your body to the tail and then extend the body
+		alt2: eat food and the food will appear as a body extension when the tail has moved one gridslot
+	}
+
+
+	boosts{
+		food: makes your body grow by 1*foodValue
+
+	}
+}
