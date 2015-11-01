@@ -19,7 +19,7 @@ Agars Snake{
 Achtung die Snake{
 	hex grid
 	multiplayer(offline)
-	how to win: ?
+	how to win: become x blocks long
 	Don't hit your head into another snakebody/yourself
 	eating{
 		alt1: eat food and the food will travel down your body to the tail and then extend the body
