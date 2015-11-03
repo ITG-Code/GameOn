@@ -68,20 +68,35 @@ public class Game extends Canvas implements Runnable{
 	@Override
 	//The gameloop which runs as long as the game is on.
 	public void run() {
+		//Makes the game only update 60 times a second
 		long lastTime  = System.nanoTime();
+		long timer = System.currentTimeMillis();
 		final double ns = 1000000000.0 / 60.0; //A billion
 		double delta = 0;
+		int frames = 0;
+		int ticks = 0;
 		while(running){
 			long now = System.nanoTime();
 			delta+= (now-lastTime) / ns;
 			lastTime = now;
-			while(delta >= 1){
+			if(delta >= 1){
 				tick();
+				ticks++;
 				delta--;
 			}
 			render();
-			
+			frames++;
+			// outputs the ticks and fps to the title
+			if(System.currentTimeMillis() - timer > 1000){
+				timer+=1000;
+				frame.setTitle("ticks: " + ticks + " fps: " + frames + " - " + this.title);
+				ticks = 0;
+				frames = 0;
+				
+			}
+			sleep(1);
 		}
+		this.stop();
 	}
 	
 	public void tick(){
@@ -96,9 +111,12 @@ public class Game extends Canvas implements Runnable{
 		}
 		render.clear();
 		render.rend();
+
 		for(int i = 0; i < this.pixels.length;i++){
 			this.pixels[i] = render.pixels[i];
 		}
+		
+		
 		//creates the context 
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.BLACK);
