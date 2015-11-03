@@ -23,7 +23,7 @@ public class Render {
 	}
 	public void clear(){
 		for(int i = 0; i < pixels.length;i++){
-						//Binary for 0
+			//Binary for 0
 			pixels[i] = 0b0;
 		}
 	}
@@ -37,7 +37,7 @@ public class Render {
 				if(x < 0 || x >= width){
 					break;
 				}
-									// x >> 4 == x / 2^4
+				// x >> 4 == x / 2^4
 				int tileIndex = (x >> 4) + (y >> 4) * 64;
 				//Fills the pixel (x,y) with the color Pink FF00FF
 				pixels[x + y * width] = tiles[tileIndex];

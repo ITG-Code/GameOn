@@ -94,7 +94,6 @@ public class Game extends Canvas implements Runnable{
 				frames = 0;
 				
 			}
-			sleep(1);
 		}
 		this.stop();
 	}
