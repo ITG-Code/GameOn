@@ -1,46 +1,133 @@
 package com.gameon.head;
 
+import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-import com.gameon.graphical.GamePanel;
+import com.gameon.graphics.Render;
 
-
-public class Game extends JFrame{
+public class Game extends Canvas implements Runnable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
-
-	public final int width = 640;
-	public final int height = width / 16 *9;
-	JPanel panel;
-	Graphics2D g;
 	
+	
+	public static int WIDTH = 1280;
+	public static int HEIGHT = WIDTH / 16 * 9;
+	public static int SCALE = 3;
+	public static boolean resizable = false;
+	public String title = "GameOn";
+	
+	private Thread thread;
+	private JFrame frame;
+	private boolean running = false;
+	private ResourceLoader rl;
+	private Render render;
+	
+	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT, BufferedImage.TYPE_INT_RGB);
+	//conversion of an image to an int array
+	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	
 	public Game(){
-		this.setTitle("GameOn!");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setPreferredSize(new Dimension(this.width,this.height));
-		this.setMinimumSize(new Dimension(640,360));
-		this.setMaximumSize(new Dimension(1920,1080));
-		panel = new GamePanel();
+		Dimension size = new Dimension(WIDTH, HEIGHT);
+		this.setPreferredSize(size);
+		rl = new ResourceLoader();
+		render = new Render(WIDTH, HEIGHT);
+		frame = new JFrame();
 		
-		this.add(panel);
-		this.pack();
-		this.setVisible(true);
-		startGame();
-		while(true){
-			panel.paint(g);
+	}
+	/**
+	 * 
+	 */
+
+	
+	public synchronized void start(){
+		this.running = true;
+		this.thread = new Thread(this);
+		this.thread.start();
+		
+	}
+	public synchronized void stop(){
+		this.running  = false;
+		try{
+			thread.join();
+		}
+		catch(InterruptedException e){
+			e.printStackTrace();
 		}
 	}
-	public static void main(String[] args){
-		new Game();
+	
+	@Override
+	//The gameloop which runs as long as the game is on.
+	public void run() {
+		long lastTime  = System.nanoTime();
+		final double ns = 1000000000.0 / 60.0; //A billion
+		double delta = 0;
+		while(running){
+			long now = System.nanoTime();
+			delta+= (now-lastTime) / ns;
+			lastTime = now;
+			while(delta >= 1){
+				tick();
+				delta--;
+			}
+			render();
+			
+		}
+	}
+	
+	public void tick(){
 		
 	}
-	public void startGame(){
+	public void render(){
+		//Creates a buffer for show ready frames
+		BufferStrategy bs = getBufferStrategy();
+		if(bs == null){
+			createBufferStrategy(3);
+			return;
+		}
+		render.clear();
+		render.rend();
+		for(int i = 0; i < this.pixels.length;i++){
+			this.pixels[i] = render.pixels[i];
+		}
+		//creates the context 
+		Graphics g = bs.getDrawGraphics();
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		//g.setColor(Color.RED);
+		//g.fillRect(400, 500, getWidth(), getHeight());
+		g.drawImage(rl.getBackground(), 0, 0, getWidth(), getHeight(), null);
+		g.drawImage(image, 0,0, this.getWidth(), this.getHeight(), null);
+		//System.out.println("test");
 		
+		//Frees up the graphics from RAM
+		g.dispose();
+		bs.show();
+		
+	}
+	
+	
+	//Creates the basic window and starts the game
+	public static void main(String[] args){
+		Game g = new Game();
+		g.frame.setResizable(resizable);
+		g.frame.setTitle(g.title);
+		g.frame.add(g);
+		g.frame.pack();
+		g.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		g.frame.setLocationRelativeTo(null);
+		g.frame.setVisible(true);
+		
+		g.start();
 	}
 	
 }
