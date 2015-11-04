@@ -14,7 +14,4 @@ public class Player extends Speeder {
 		// TODO Auto-generated method stub
 		
 	}
-	public void draw(Graphics g){
-		g.drawImage(this.image, x, y, width, height, null);
-	}
 }

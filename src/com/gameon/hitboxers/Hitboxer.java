@@ -24,7 +24,7 @@ private final double max = 3.1;
 		height = 100;
 	}
 	
-	public void drawArrow(Graphics2D g)
+	public void draw(Graphics2D g)
 	{
 		AffineTransform transform = new AffineTransform();
 		g.drawImage(image,x,y, width, height, null);

@@ -8,42 +8,61 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-import com.gameon.hitboxers.Hitboxer;
 import com.gameon.hitboxers.Player;
 
 public class Game extends Applet implements Runnable {
 private Thread thread = null;
-public static final int BREDD = 1320;
-private Image bild;
+public static final int WIDTH = 1280;
+public static final int HEIGHT = 720;
+private Image image;
 private Graphics2D g;
 private Player player;
 
-//GameClock
-private Engine engine;
-private long lastTime  = System.nanoTime();
-private long timer = System.currentTimeMillis();
-private final double ns = 1000000000.0 / 60.0; //A billion
-private double tickDelta = 0;
+
+
+private static String OS = System.getProperty("os.name").toLowerCase();
+private ResourceLoader rl;
+
 private int frames = 0;
 private int ticks = 0;
+private int aliveTime = 0;
+private long timer= 0;
+//GameClock
+private Engine engine;
 
 	public void init()
 	{
-		bild = createImage(BREDD,BREDD);
-		g =(Graphics2D) bild.getGraphics();
-		Image temp = new ImageIcon("spaceship.png").getImage();
-		player = new Player(temp);
-		//Makes the game only update 60 times a second
-				
+		System.out.println(OS);
+		if(OS.indexOf("win") >= 0){
+			rl = new ResourceLoader("\\");
+		}
+		else if(OS.indexOf("linux") >= 0){
+			rl = new ResourceLoader("/");
+		}
+		else if(OS.indexOf("Mac") >= 0){
+			rl = new ResourceLoader("Mac");
+		}
+		image = createImage(WIDTH, HEIGHT);
+		g =(Graphics2D) image.getGraphics();
+		
+		//player = new Player(temp);
 	}
 	
 	
-	public void paintComponent(Graphics page)
+	public void paint(Graphics page)
 	{
 		g.setColor(new Color(0,0,0));
-		g.fillRect(0, 0, BREDD, BREDD);
-		player.draw(g);
-		page.drawImage(bild, 0, 0, this);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		//player.draw(g);
+		g.setColor(Color.RED);
+		g.fillRect(600,600, WIDTH, HEIGHT);
+		//Image temp = new ImageIcon("/wallpaper.png").getImage();
+		//System.out.println(temp.getWidth(this));
+		//g.drawImage(temp, 0,0, this);
+		g.drawImage(rl.getBackground(),0,0,null);
+		g.drawString("Ticks: " + this.ticks  + " FPS: " + this.frames, 10, 10);
+		g.drawString("Time alive: " + aliveTime + " seconds", 1100, 10);
+		page.drawImage(image, 0, 0, this);
 		
 		
 	}
@@ -51,90 +70,45 @@ private int ticks = 0;
 	
 	public void update(Graphics page)
 	{
-		long now = System.nanoTime();
-		tickDelta+= (now-lastTime) / ns;
-		lastTime = now;
-		if(tickDelta >= 1){
-			//	engine.tick();
-			ticks++;
-			tickDelta--;
-		}
-		paintComponent(page);
-		frames++;
-		// outputs the ticks and fps to the title
-		if(System.currentTimeMillis() - timer > 1000){
-			//Add frame and tick showing
-			timer+=1000;
-			ticks = 0;
-			frames = 0;
-			
-		}
+		paint(page);
+
 		
-		Graphics2D g= (Graphics2D) (page);
+		//Graphics2D g= (Graphics2D) (page);
 		
 	}
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
-		while(thread != null)
-		{
-			repaint();
-			try
-			{
-				Thread.sleep(10);
+		long startTime = System.currentTimeMillis();
+		long now = 0;
+		timer = System.currentTimeMillis();
+		long lastTime  = System.nanoTime();
+		final double ns = 1000000000.0 / 60.0; //A billion
+		double tickDelta = 0;
+		while(thread != null){
+			now = System.nanoTime();
+			tickDelta+= (now - lastTime);
+			lastTime = now;
+			while(tickDelta >= ns){
+				//engine.tick();
+				
+				ticks++;
+				tickDelta-= ns;
 			}
-			catch(InterruptedException error)
-			{
+			repaint();
+			frames++;
+			// outputs the ticks and fps to the title
+			if(System.currentTimeMillis() - timer > 1000){
+				//Add frame and tick showing
+				aliveTime = (int) (System.currentTimeMillis() - startTime) / 1000;
+				timer+=1000;
+				ticks = 0;
+				frames = 0;
 				
 			}
+			
 		}
 	}
-
-		/*class MusHanterare extends MouseAdapter
-		{
-			public void mouseClicked(MouseEvent e)
-			{
-				BackGround.handleMouse(e);
-			}
-		}
-		
-		class TangentLyssnare extends KeyAdapter
-		{
-			public void keyReleased(KeyEvent e)
-			{
-				BackGround.bromsa();
-			}
-			public void keyPressed(KeyEvent e)
-			{
-				handle(e);
-			}
-			public void keyTyped(KeyEvent e)
-			{
-				handle(e);
-			}
-			public void handle(KeyEvent e)
-			{
-				int key = e.getKeyCode();
-				BackGround.starta();
-				switch(key)
-				{
-				case 39:
-					BackGround.right();
-				break;
-				case 37:
-					BackGround.left();
-					break;
-				
-				case 40:
-				BackGround.backa();
-				break;
-				}
-			}
-		}
-	
-	*/
 	public void start()
 	{
 		if(thread == null)

@@ -3,13 +3,31 @@ package com.gameon.head;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 public class ResourceLoader {
 		private Image background;
 		private Image[] ship;
-	public ResourceLoader(){
-		Image background = new ImageIcon("C:\\Users\\phuongnam.nguyen\\workspace\\GameOn\\src\\wallpapper.png").getImage();
+		
+		
+		
+	public ResourceLoader(String r){
+		
+		String[] imageLocations = {
+				"images/background.jpg"
+				
+		};
+		
+		for(int i = 0; i < imageLocations.length;i++){
+			imageLocations[i] = imageLocations[i].replaceAll("/", r);
+		}
+		
+		Image temp = null;
+		
+		//Loads the background image
+		background = new ImageIcon(imageLocations[0]).getImage();
+		
+		
+		
+		
 		System.out.println(background.getWidth(null));
 		
 	}
