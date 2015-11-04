@@ -1,150 +1,152 @@
 package com.gameon.head;
 
-import java.awt.Canvas;
+import java.applet.Applet;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
+import java.awt.Graphics2D;
+import java.awt.Image;
 
-import javax.swing.JFrame;
+import javax.swing.ImageIcon;
 
-import com.gameon.graphics.Render;
+import com.gameon.hitboxers.Hitboxer;
+import com.gameon.hitboxers.Player;
 
-public class Game extends Canvas implements Runnable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Game extends Applet implements Runnable {
+private Thread thread = null;
+public static final int BREDD = 1320;
+private Image bild;
+private Graphics2D g;
+private Player player;
+
+//GameClock
+private Engine engine;
+private long lastTime  = System.nanoTime();
+private long timer = System.currentTimeMillis();
+private final double ns = 1000000000.0 / 60.0; //A billion
+private double tickDelta = 0;
+private int frames = 0;
+private int ticks = 0;
+
+	public void init()
+	{
+		bild = createImage(BREDD,BREDD);
+		g =(Graphics2D) bild.getGraphics();
+		Image temp = new ImageIcon("spaceship.png").getImage();
+		player = new Player(temp);
+		//Makes the game only update 60 times a second
+				
+	}
 	
 	
-	
-	public static int WIDTH = 1280;
-	public static int HEIGHT = WIDTH / 16 * 9;
-	public static int SCALE = 3;
-	public static boolean resizable = false;
-	public String title = "GameOn";
-	
-	private Thread thread;
-	private JFrame frame;
-	private boolean running = false;
-	private ResourceLoader rl;
-	private Render render;
-	
-	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT, BufferedImage.TYPE_INT_RGB);
-	//conversion of an image to an int array
-	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-	
-	public Game(){
-		Dimension size = new Dimension(WIDTH, HEIGHT);
-		this.setPreferredSize(size);
-		rl = new ResourceLoader();
-		render = new Render(WIDTH, HEIGHT);
-		frame = new JFrame();
+	public void paintComponent(Graphics page)
+	{
+		g.setColor(new Color(0,0,0));
+		g.fillRect(0, 0, BREDD, BREDD);
+		player.draw(g);
+		page.drawImage(bild, 0, 0, this);
+		
 		
 	}
-	/**
-	 * 
-	 */
-
 	
-	public synchronized void start(){
-		this.running = true;
-		this.thread = new Thread(this);
-		this.thread.start();
+	
+	public void update(Graphics page)
+	{
+		long now = System.nanoTime();
+		tickDelta+= (now-lastTime) / ns;
+		lastTime = now;
+		if(tickDelta >= 1){
+			//	engine.tick();
+			ticks++;
+			tickDelta--;
+		}
+		paintComponent(page);
+		frames++;
+		// outputs the ticks and fps to the title
+		if(System.currentTimeMillis() - timer > 1000){
+			//Add frame and tick showing
+			timer+=1000;
+			ticks = 0;
+			frames = 0;
+			
+		}
 		
-	}
-	public synchronized void stop(){
-		this.running  = false;
-		try{
-			thread.join();
-		}
-		catch(InterruptedException e){
-			e.printStackTrace();
-		}
+		Graphics2D g= (Graphics2D) (page);
+		
 	}
 	
 	@Override
-	//The gameloop which runs as long as the game is on.
 	public void run() {
-		//Makes the game only update 60 times a second
-		long lastTime  = System.nanoTime();
-		long timer = System.currentTimeMillis();
-		final double ns = 1000000000.0 / 60.0; //A billion
-		double delta = 0;
-		int frames = 0;
-		int ticks = 0;
-		while(running){
-			long now = System.nanoTime();
-			delta+= (now-lastTime) / ns;
-			lastTime = now;
-			if(delta >= 1){
-				tick();
-				ticks++;
-				delta--;
+		// TODO Auto-generated method stub
+		
+		while(thread != null)
+		{
+			repaint();
+			try
+			{
+				Thread.sleep(10);
 			}
-			render();
-			frames++;
-			// outputs the ticks and fps to the title
-			if(System.currentTimeMillis() - timer > 1000){
-				timer+=1000;
-				frame.setTitle("ticks: " + ticks + " fps: " + frames + " - " + this.title);
-				ticks = 0;
-				frames = 0;
+			catch(InterruptedException error)
+			{
 				
 			}
 		}
-		this.stop();
 	}
-	
-	public void tick(){
-		
-	}
-	public void render(){
-		//Creates a buffer for show ready frames
-		BufferStrategy bs = getBufferStrategy();
-		if(bs == null){
-			createBufferStrategy(3);
-			return;
-		}
-		render.clear();
-		render.rend();
 
-		for(int i = 0; i < this.pixels.length;i++){
-			this.pixels[i] = render.pixels[i];
+		/*class MusHanterare extends MouseAdapter
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				BackGround.handleMouse(e);
+			}
 		}
 		
-		
-		//creates the context 
-		Graphics g = bs.getDrawGraphics();
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		//g.setColor(Color.RED);
-		//g.fillRect(400, 500, getWidth(), getHeight());
-		g.drawImage(rl.getBackground(), 0, 0, getWidth(), getHeight(), null);
-		g.drawImage(image, 0,0, this.getWidth(), this.getHeight(), null);
-		//System.out.println("test");
-		
-		//Frees up the graphics from RAM
-		g.dispose();
-		bs.show();
-		
+		class TangentLyssnare extends KeyAdapter
+		{
+			public void keyReleased(KeyEvent e)
+			{
+				BackGround.bromsa();
+			}
+			public void keyPressed(KeyEvent e)
+			{
+				handle(e);
+			}
+			public void keyTyped(KeyEvent e)
+			{
+				handle(e);
+			}
+			public void handle(KeyEvent e)
+			{
+				int key = e.getKeyCode();
+				BackGround.starta();
+				switch(key)
+				{
+				case 39:
+					BackGround.right();
+				break;
+				case 37:
+					BackGround.left();
+					break;
+				
+				case 40:
+				BackGround.backa();
+				break;
+				}
+			}
+		}
+	
+	*/
+	public void start()
+	{
+		if(thread == null)
+		{
+			thread = new Thread(this);
+			thread.start();
+		}
 	}
 	
-	
-	//Creates the basic window and starts the game
-	public static void main(String[] args){
-		Game g = new Game();
-		g.frame.setResizable(resizable);
-		g.frame.setTitle(g.title);
-		g.frame.add(g);
-		g.frame.pack();
-		g.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		g.frame.setLocationRelativeTo(null);
-		g.frame.setVisible(true);
-		
-		g.start();
+	public void stop()
+	{
+		thread = null;
 	}
-	
+
 }
