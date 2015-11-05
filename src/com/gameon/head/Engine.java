@@ -19,8 +19,8 @@ public class Engine {
 	}
 	
 	public void tick(){
-		System.out.println("Hi");
-		int[] inputs = input.getInputs();
+		/*System.out.println("Hi");
+		//int[] inputs = input.getInputs();
 		sn.addDistance();
 		p.addDistance();
 		for(int i = 0; i < enemies.length;i++){
@@ -52,7 +52,7 @@ public class Engine {
 				}
 			}
 		}
-		
+		*/
 	}
 	private void blueShot(){
 		

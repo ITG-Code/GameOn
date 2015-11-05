@@ -12,15 +12,15 @@ public class ResourceLoader {
 	public ResourceLoader(String r){
 		
 		String[] imageLocations = {
-				"images/background.jpg"
+				"images\\background.jpg"
 				
 		};
-		
+		/*
 		for(int i = 0; i < imageLocations.length;i++){
 			imageLocations[i] = imageLocations[i].replaceAll("/", r);
+			
 		}
-		
-		Image temp = null;
+		*/
 		
 		//Loads the background image
 		background = new ImageIcon(imageLocations[0]).getImage();
