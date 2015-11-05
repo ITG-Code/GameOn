@@ -68,16 +68,16 @@ protected int[] inputs;
 		g.drawString(pressedKeys, 200, 200);
 		engine.getPlayer().draw(g);
 		engine.getSuperNova().draw(g);
-		LinkedList<Enemy> e = engine.getEnemies();
-		for(int i = 0; i < e.size();i++){
-			Enemy ed = e.get(i);
-			ed.draw(g);
+		
+		for(int i = 0; i < engine.enemies.size();i++){
+			engine.enemies.get(i).draw(g);
 		}
+		
 		
 		if(engine.shots != null){
 			for(int i = 0; i < engine.shots.size(); i++){
-				Shot s = engine.shots.get(i);
-				s.draw(g);
+				System.out.println(engine.shots.size());
+				engine.shots.get(i).draw(g);
 			}
 		}
 		

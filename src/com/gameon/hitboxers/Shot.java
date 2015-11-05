@@ -16,7 +16,7 @@ public class Shot extends Hitboxer {
 		
 	}
 	public void move(){
-		y-=25;
+		y-=10;
 	}
 	public void draw(Graphics2D g){
 		g.drawImage(image, x, y, width, height, null);

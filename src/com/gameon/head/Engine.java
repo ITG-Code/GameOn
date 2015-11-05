@@ -20,10 +20,30 @@ public class Engine {
 	}
 	
 	public void tick(){
-
+		removeExcess();
+		move();
 		//int[] inputs = input.getInputs();
 		//int[] inputs = getInputs();
-		int[] inputs = {87};
+		
+		//Removes all the enemies outside playarea 
+		
+		
+	}
+	private void removeExcess(){
+		for(int i = 0; i < enemies.size(); i++){
+			if(enemies.get(i).getX() <= 50 || enemies.get(i).getX() >= 1300 || enemies.get(i).getY() <= 50 || enemies.get(i).getY() >= 750){
+				enemies.remove(i);
+			}
+		}
+		for(int i = 0; i < enemies.size();i++){
+			if(shots.get(i).getX() <= 50 || shots.get(i).getX() >= 1300 || shots.get(i).getY() <= -69 || shots.get(i).getY() >= 750){
+				shots.remove(i);
+			}
+		}
+		
+		
+	}
+	private void move(){
 		sn.addDistance();
 		p.addDistance();
 		if(enemies != null ){
@@ -34,6 +54,7 @@ public class Engine {
 				enemies.add(e);
 			}
 		}
+
 		for(int i = 0; i < shots.size();i++){
 			Shot s = shots.get(i);
 			shots.removeFirst();
@@ -41,56 +62,6 @@ public class Engine {
 			shots.add(s);
 		}
 		enemies.add(new Enemy(rl.getRedEnemy())); 
-		
-		//Removes all the enemies outside playarea 
-		/*for(int i = 0; i < enemies.length; i++){
-			if(enemies[i].getX() <= 50 || enemies[i].getX() >= 1300 || enemies[i].getY() <= 50 || enemies[i].getY() >= 750){
-				Enemy[] tempE = new Enemy[enemies.length-1];
-				int offset = 0;
-				for(int j = 0; j < enemies.length;j++){
-					if(j == i){
-						offset = 1;
-					}
-					else{
-						tempE[j-offset] = enemies[j];
-					}
-				}
-				enemies = tempE;
-			}
-		}*/
-		/*if(shot != null){
-			shot.move();
-			if(shot.getX() <= 50 || shot.getX() >= 1300 || shot.getY() <= -69 || shot.getY() >= 750){
-				shot = null;
-			}
-		}*/
-		
-
-		if(inputs.length > 0){
-			/*for(int i = 0; i < inputs.length;i++){
-				if(inputs[i] == 65){// A
-					p.moveLeft();
-				}
-				if(inputs[i] == 68){// D
-					p.moveRight();
-				}
-				if(inputs[i] == 83){ //S
-					p.userDecelarate();
-				}
-				if(inputs[i] == 87){ // W
-					p.userAcc();
-				}
-				if(inputs[i] == 66){ // B
-				//	greenShot();
-				}
-				if(inputs[i] == 78){ // N
-					//redShot();
-				}
-				if(inputs[i] == 77){ // M
-					blueShot();
-				}
-			}*/
-		}
 		
 	}
 	
