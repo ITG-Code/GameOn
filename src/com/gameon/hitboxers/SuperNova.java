@@ -4,8 +4,8 @@ import java.awt.Image;
 
 public class SuperNova extends Speeder {
 
-	public SuperNova(Image bild) {
-		super(bild);
+	public SuperNova(Image image) {
+		super(image);
 		// TODO Auto-generated constructor stub
 	}
 

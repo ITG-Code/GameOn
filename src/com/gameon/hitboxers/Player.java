@@ -6,7 +6,8 @@ public class Player extends Speeder {
 
 	public Player(Image image) {
 		super(image);
-		
+		this.x = 600;
+		this.y = 550;
 	}
 	public void moveLeft(){
 		this.x-=40;

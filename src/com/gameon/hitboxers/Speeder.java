@@ -8,8 +8,8 @@ public class Speeder extends Hitboxer {
 	private double speed = 1;
 	
 	
-	public Speeder(Image bild) {
-		super(bild);
+	public Speeder(Image image) {
+		super(image);
 	}
 	
 	public void accelarate(){

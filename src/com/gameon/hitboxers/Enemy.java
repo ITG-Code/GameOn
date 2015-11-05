@@ -7,7 +7,7 @@ public class Enemy extends Hitboxer {
 	public Enemy(Image bild) {
 		super(bild);
 		x = 600;
-		y = 0;
+		y = 20;
 	}
 	public void move(double amount){
 		
