@@ -1,6 +1,5 @@
 package com.gameon.hitboxers;
 
-import java.awt.Graphics;
 import java.awt.Image;
  
 public class Player extends Speeder {
@@ -9,9 +8,10 @@ public class Player extends Speeder {
 		super(image);
 		
 	}
-
-	public void addDistance() {
-		// TODO Auto-generated method stub
-		
+	public void moveLeft(){
+		this.x-=40;
+	}
+	public void moveRight(){
+		this.x+=40;
 	}
 }

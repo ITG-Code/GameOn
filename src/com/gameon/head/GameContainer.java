@@ -6,22 +6,23 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
-import javax.swing.ImageIcon;
-
+import com.gameon.hitboxers.Enemy;
 import com.gameon.hitboxers.Player;
+import com.gameon.hitboxers.Shot;
 
-public class Game extends Applet implements Runnable {
+public class GameContainer extends Applet implements Runnable {
 private Thread thread = null;
 public static final int WIDTH = 1280;
 public static final int HEIGHT = 720;
 private Image image;
 private Graphics2D g;
-private Player player;
 
 
 
 private static String OS = System.getProperty("os.name").toLowerCase();
 private ResourceLoader rl;
+
+
 
 private int frames = 0;
 private int ticks = 0;
@@ -29,6 +30,11 @@ private int aliveTime = 0;
 private long timer= 0;
 //GameClock
 private Engine engine;
+
+
+
+
+
 
 	public void init()
 	{
@@ -56,7 +62,7 @@ private Engine engine;
 		//player.draw(g);
 		g.setColor(Color.RED);
 		g.fillRect(600,600, WIDTH, HEIGHT);
-		//Image temp = new ImageIcon("/wallpaper.png").getImage();
+		//Image temp = new ImageIcon("/wallpaper.png")		//AffineTransform transform = new AffineTransform();.getImage();
 		//System.out.println(temp.getWidth(this));
 		//g.drawImage(temp, 0,0, this);
 		g.drawImage(rl.getBackground(),0,0,null);
@@ -107,8 +113,11 @@ private Engine engine;
 				
 			}
 			
+	
+	
 		}
 	}
+
 	public void start()
 	{
 		if(thread == null)

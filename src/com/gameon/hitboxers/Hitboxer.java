@@ -2,7 +2,6 @@ package com.gameon.hitboxers;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.AffineTransform;
 
 public class Hitboxer {
 
@@ -26,9 +25,8 @@ private final double max = 3.1;
 	
 	public void draw(Graphics2D g)
 	{
-		AffineTransform transform = new AffineTransform();
 		g.drawImage(image,x,y, width, height, null);
-		transform.setToIdentity();
+
 		
 	}
 }
