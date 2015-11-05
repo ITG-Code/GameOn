@@ -1,5 +1,7 @@
 package com.gameon.head;
 
+import java.util.LinkedList;
+
 import com.gameon.hitboxers.Enemy;
 import com.gameon.hitboxers.Player;
 import com.gameon.hitboxers.Shot;
@@ -8,8 +10,8 @@ import com.gameon.hitboxers.SuperNova;
 public class Engine {
 	public Player p;
 	public SuperNova sn;
-	public Enemy[] enemies;
-	public Shot shot;
+	public LinkedList <Enemy> enemies = new LinkedList<Enemy>();
+	public LinkedList <Shot> shots = new LinkedList<Shot>();
 	private ResourceLoader rl;
 	public Engine(ResourceLoader rl){
 		this.rl = rl;
@@ -25,14 +27,21 @@ public class Engine {
 		sn.addDistance();
 		p.addDistance();
 		if(enemies != null ){
-			for(int i = 0; i < enemies.length;i++){
-				enemies[i].move(p.getSpeed());
+			for(int i = 0; i < enemies.size();i++){
+				Enemy e = enemies.get(i);
+				enemies.removeFirst();
+				e.move(p.getSpeed());
+				enemies.add(e);
 			}
 		}
-		if(enemies == null){
-			enemies = new Enemy[1];
-			enemies[0] = new Enemy(rl.getRedEnemy());
+		for(int i = 0; i < shots.size();i++){
+			Shot s = shots.get(i);
+			shots.removeFirst();
+			s.move();
+			shots.add(s);
 		}
+		enemies.add(new Enemy(rl.getRedEnemy())); 
+		
 		//Removes all the enemies outside playarea 
 		/*for(int i = 0; i < enemies.length; i++){
 			if(enemies[i].getX() <= 50 || enemies[i].getX() >= 1300 || enemies[i].getY() <= 50 || enemies[i].getY() >= 750){
@@ -49,12 +58,12 @@ public class Engine {
 				enemies = tempE;
 			}
 		}*/
-		if(shot != null){
+		/*if(shot != null){
 			shot.move();
 			if(shot.getX() <= 50 || shot.getX() >= 1300 || shot.getY() <= -69 || shot.getY() >= 750){
 				shot = null;
 			}
-		}
+		}*/
 		
 
 		if(inputs.length > 0){
@@ -86,25 +95,25 @@ public class Engine {
 	}
 	
 	public void greenShot(){
-		shot = new Shot(rl.getShot(), p);
+		shots.add(new Shot(rl.getGreenShot(), p, (byte)1));
 	}
 	public void redShot(){
-		
+		shots.add(new Shot(rl.getRedShot(), p, (byte)2));
 	}
 	public void blueShot(){
-		
+		shots.add(new Shot(rl.getBlueShot(), p, (byte)3));
 	}
 
 	public Player getPlayer() {
 		return p;
 	}
 
-	public Enemy[] getEnemies() {
+	public LinkedList<Enemy> getEnemies() {
 		return enemies;
 	}
 
-	public Shot getShots() {
-		return shot;
+	public LinkedList<Shot> getShots() {
+		return shots;
 	}
 
 	public SuperNova getSuperNova() {

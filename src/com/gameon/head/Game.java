@@ -7,8 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 
 import com.gameon.hitboxers.Enemy;
+import com.gameon.hitboxers.Shot;
 public class Game extends Applet implements Runnable {
 private Thread thread = null;
 public static final int WIDTH = 1280;
@@ -66,14 +68,17 @@ protected int[] inputs;
 		g.drawString(pressedKeys, 200, 200);
 		engine.getPlayer().draw(g);
 		engine.getSuperNova().draw(g);
-		Enemy[] e = engine.getEnemies();
-		if(e != null){
-			for(int i = 0; i < e.length;i++){
-				e[i].draw(g);
-			}
+		LinkedList<Enemy> e = engine.getEnemies();
+		for(int i = 0; i < e.size();i++){
+			Enemy ed = e.get(i);
+			ed.draw(g);
 		}
-		if(engine.shot != null){
-			engine.shot.draw(g);
+		
+		if(engine.shots != null){
+			for(int i = 0; i < engine.shots.size(); i++){
+				Shot s = engine.shots.get(i);
+				s.draw(g);
+			}
 		}
 		
 		
