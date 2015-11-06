@@ -27,8 +27,10 @@ public class Hitboxer {
 
 	public void draw(Graphics2D g) {
 		if (killed) {
-			g.drawImage(deathAnimation[deathState], x, y, width, height, null);
-			deathState++;
+			if(!(deathAnimation.length < deathState)){
+				g.drawImage(deathAnimation[deathState], x, y, width, height, null);
+				deathState++;
+			}
 		} else {
 			g.drawImage(image, x, y, width, height, null);
 		}
