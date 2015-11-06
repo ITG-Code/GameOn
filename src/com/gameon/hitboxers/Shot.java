@@ -6,8 +6,8 @@ import java.awt.Image;
 public class Shot extends Hitboxer {
 	byte color;
 	
-	public Shot(Image image, Player p, byte type) {
-		super(image);
+	public Shot(Image image, Image[] da, Player p, byte type) {
+		super(image, da);
 		this.x = p.x + 37;
 		this.y = p.y - 80;
 		this.width = 27;
@@ -17,9 +17,6 @@ public class Shot extends Hitboxer {
 	}
 	public void move(){
 		y-=10;
-	}
-	public void draw(Graphics2D g){
-		g.drawImage(image, x, y, width, height, null);
 	}
 	private byte type;
 	private double vel;

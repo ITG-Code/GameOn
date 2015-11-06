@@ -2,99 +2,43 @@ package com.gameon.input;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 
-public class KeyBoardInput extends KeyAdapter{
-	private int[] keys;
-	private long[] keyTime;
-	public int[] getInputs(){
-		return keys;
-		
+public class KeyBoardInput extends KeyAdapter {
+	/**
+	 * 
+	 * the class collects keyStrokes and then deletes them after they've been sent 
+	 * 	
+	**/
+	private LinkedList<Integer> pressedKeys = new LinkedList<Integer>();
+
+	public int[] getKeys() {
+		if (pressedKeys.isEmpty()) {
+			return new int[0];
+		} else {
+			int[] a = new int[pressedKeys.size()];
+			for (int i = 0; i < a.length; i++) {
+				a[i] = pressedKeys.get(i);
+			}
+			pressedKeys.clear();
+			return a;
+		}
+
 	}
-	
-	@Override
+
 	public void keyPressed(KeyEvent e) {
-		int key = (int) e.getKeyChar();
-		addKey(key);
+		System.out.println(e.getKeyChar());
+		pressedKeys.add((int) e.getKeyChar());
 		e.consume();
 	}
-	@Override
-	public void keyReleased(KeyEvent e) {
-	//	System.out.println(keys.length);
-		int key = (int) e.getKeyChar();
-	    //System.out.println(key);
-		removeKey(key);
-		e.consume();
-		
-	}
-	@Override
+
 	public void keyTyped(KeyEvent e) {
+		pressedKeys.add((int) e.getKeyChar());
 		e.consume();
-		
 	}
-	private void addKey(int key){
-		if(keys == null){
-			keys = new int[1];
-			keys[0] = key;
-			keyTime = new long[1];
-			keyTime[0] = System.nanoTime();
-		}
-		else{
-			boolean exists = false;
-			for(int i = 0; i < keys.length;i++){
-				if(keys[i] == key){
-					exists = true;
-				}
-			}
-			if(!exists){
-				long[] tempTime = new long[keys.length+1];
-				int[] tempKeys = new int[keys.length+1];
-				for(int i = 0; i < keys.length;i++){
-					tempKeys[i] = keys[i];
-					tempTime[i] = keyTime[i];
-				}
-				tempTime[tempKeys.length-1] = System.nanoTime();
-				tempKeys[tempKeys.length-1] = key;
-				
-				keys = tempKeys;
-				keyTime = tempTime;
-			}
-			
-		}
-		
-	
+
+	public void keyReleased(KeyEvent e) {
+		e.consume();
 	}
-	private void removeKey(int key){
-		/*int[] tempKeys = new int[keys.length-1];
-		long[] tempTime = new long[keys.length-1];
-		for(int i = 0; i < keys.length; i++){
-			//If the the key matches the key in the array and 1 game tick in time has passed, remove the key
-			if(key == keys[i] && System.nanoTime() >= keyTime[i] + 1000000000.0 / 60.0){
-				int keyFoundOffset = 0;
-				for(int j = 0; j < keys.length;j++){
-					if(i != j){
-						tempKeys[i-keyFoundOffset] = keys[i];
-						tempTime[i-keyFoundOffset] = keyTime[i];
-					}
-					else{
-						keyFoundOffset = 1;
-					}
-				}
-			}
-		}
-		keyTime = tempTime;
-		keys = tempKeys;*/
-		int[] tempKeys = new int[keys.length-1];
-		int offset = 0;
-		for(int i = 0; i < keys.length;i++){
-			if(key == keys[i]){
-				offset = 1;
-			}
-			else{
-				tempKeys[i-offset] = keys[i];
-				
-			}
-		}
-		keys = tempKeys;
-	}
-	
+
 }

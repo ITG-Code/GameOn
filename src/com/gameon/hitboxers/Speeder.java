@@ -3,32 +3,24 @@ package com.gameon.hitboxers;
 import java.awt.Image;
 
 public class Speeder extends Hitboxer {
-	
+
 	private int distance = 0;
 	private double speed = 1;
-	
-	
-	public Speeder(Image image) {
-		super(image);
+
+	public Speeder(Image image, Image[] da) {
+		super(image, da);
 	}
-	
-	public void accelarate(){
-		double speed=+0.00005;
+
+	public void move() {
+
+		// Add left and right movement
 	}
-	public void userAcc(){
-		double speed=+0.05;
+
+	public void addDistance() {
+		distance += (int) speed;
 	}
-	public void userDecelarate(){
-		double speed=-0.05;
-	}
-	public void move(){
-	
-		//Add left and right movement
-	}
-	public void addDistance(){
-		distance+=(int)speed;
-	}
-	public double getSpeed(){
+
+	public double getSpeed() {
 		return this.speed;
 	}
 }
