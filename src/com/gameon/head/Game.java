@@ -9,6 +9,11 @@ import java.awt.Image;
 import com.gameon.input.KeyBoardInput;
 
 public class Game extends Applet implements Runnable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Thread thread = null;
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;

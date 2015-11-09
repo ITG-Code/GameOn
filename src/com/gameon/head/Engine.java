@@ -1,7 +1,6 @@
 package com.gameon.head;
 
 import java.awt.Image;
-import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 
 import com.gameon.hitboxers.Enemy;
@@ -123,16 +122,8 @@ public class Engine {
 
 	}
 	
-	private boolean collisionDetect(Hitboxer hb1, Hitboxer hb2) {
-		/*Rectangle2D.Float rect1 = new Rectangle2D.Float((float)hb2.getX(), (float)hb2.getY(), (float)hb2.getWidth(), (float)hb2.getHeight());
-		Rectangle2D.Float rect2 = new Rectangle2D.Float((float)hb2.getX(), (float)hb2.getY(), (float)hb2.getWidth(), (float)hb2.getHeight());
-		if (rect1.intersects(rect2)) {
-			System.out.println("hit");
-			return true;
-		} else {
-			return false;
-		}*/
-		if(hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getX() + hb1.getWidth() > hb2.getX() && hb1.getX() < hb2.getX()){
+	private boolean collisionDetect(Hitboxer hb1, Hitboxer hb2) {	
+		if(hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getLane() == hb2.getLane()){
 			return true;
 		}
 		else{
