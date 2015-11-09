@@ -28,38 +28,21 @@ public class Engine {
 
 		this.p = new Player(rl.getShip(), null);
 		this.sn = new SuperNova(rl.getShip(), null);
+		enemies.add(new Enemy(rl.getRedEnemy(), null));
 	}
 	public void tick() {
-		removeExcess();
+		despawn();
 		move();
 		killHit();
 	}
 	public void tick(int[] keys) {
-		removeExcess();
+		despawn();
 		inputMovement(keys);
 		move();
 		killHit();
 	}
-	
-
-	private void removeExcess() {
-		for (int i = 0; i < enemies.size(); i++) {
-			if (enemies.get(i).getX() <= 50 || enemies.get(i).getX() >= 1300 || enemies.get(i).getY() <= 50
-					|| enemies.get(i).getY() >= 750) {
-				enemies.remove(i);
-			}
-		}
-		for (int i = 0; i < enemies.size(); i++) {
-			if (shots.get(i).getX() <= 50 || shots.get(i).getX() >= 1300 || shots.get(i).getY() <= -69
-					|| shots.get(i).getY() >= 750) {
-				shots.remove(i);
-			}
-		}
-
-	}
 
 	private void inputMovement(int[] keys) {
-
 		for (int key : keys) {
 
 			if (key == 65 || key == 97) {// A
@@ -91,6 +74,7 @@ public class Engine {
 	}
 
 	private void move() {
+		
 		sn.addDistance();
 		p.addDistance();
 		if (enemies != null) {
@@ -103,28 +87,55 @@ public class Engine {
 			shots.get(i).move();
 		}
 		// Add deathAnimation
-		enemies.add(new Enemy(rl.getRedEnemy(), null));
+		
 
 	}
 
+	
+	private void despawn(){
+		for (int i = 0; i < enemies.size(); i++) {
+			if (enemies.get(i).getX() <= -100 || enemies.get(i).getX() >= 1300 || enemies.get(i).getY() <= -100 || enemies.get(i).getY() >= 750  || enemies.get(i).isKilled()) {
+				enemies.remove(i);
+			}
+		}
+		for (int i = 0; i < shots.size(); i++) {
+			if (shots.get(i).getX() <= -100 || shots.get(i).getX() >= 1300 || shots.get(i).getY() <= -100 || shots.get(i).getY() >= 750) {
+				shots.remove(i);
+			}
+		}
+		
+	}
 	private void killHit() {
 		// Detects any enemy that has crashed into the player
 		for (int i = 0; i < enemies.size(); i++) {
-			if (enemies.get(i).killed()) {
-				if (collisionDetect(enemies.get(i), p)) {
-					enemies.get(i).kill();
+			if (collisionDetect(enemies.get(i), p)) {
+					enemies.remove(i);
+					p.kill();
 				}
-			}
-
+				for(int j = 0; j < shots.size(); j++){
+					if(collisionDetect(enemies.get(i), shots.get(j))){
+						enemies.remove(i);
+						shots.remove(j);
+					}
+				}
 		}
-	}
 
+	}
+	
 	private boolean collisionDetect(Hitboxer hb1, Hitboxer hb2) {
-		Rectangle2D.Double rect1 = new Rectangle2D.Double(hb2.getX(), hb2.getY(), hb2.getWidth(), hb2.getHeight());
-		Rectangle2D.Double rect2 = new Rectangle2D.Double(hb2.getX(), hb2.getY(), hb2.getWidth(), hb2.getHeight());
-		if (rect1.contains(rect2)) {
+		/*Rectangle2D.Float rect1 = new Rectangle2D.Float((float)hb2.getX(), (float)hb2.getY(), (float)hb2.getWidth(), (float)hb2.getHeight());
+		Rectangle2D.Float rect2 = new Rectangle2D.Float((float)hb2.getX(), (float)hb2.getY(), (float)hb2.getWidth(), (float)hb2.getHeight());
+		if (rect1.intersects(rect2)) {
+			System.out.println("hit");
 			return true;
 		} else {
+			return false;
+		}*/
+		System.out.println(hb1.getY() + " vs " + hb2.getY());
+		if(hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getX() + hb1.getWidth() > hb2.getX() && hb1.getX() < hb2.getX()){
+			return true;
+		}
+		else{
 			return false;
 		}
 	}

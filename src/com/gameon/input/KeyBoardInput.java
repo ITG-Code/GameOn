@@ -7,14 +7,21 @@ import java.util.LinkedList;
 public class KeyBoardInput extends KeyAdapter {
 	/**
 	 * 
-	 * the class collects keyStrokes and then deletes them after they've been sent 
-	 * 	
-	**/
+	 * the class collects keyStrokes and then deletes them after they've been
+	 * sent
+	 * 
+	 **/
 	private LinkedList<Integer> pressedKeys = new LinkedList<Integer>();
 
+	public int getLength() {
+		return this.pressedKeys.size();
+	}
+
 	public int[] getKeys() {
+
 		if (pressedKeys.isEmpty()) {
-			return new int[0];
+			int[] a = { 0 };
+			return a;
 		} else {
 			int[] a = new int[pressedKeys.size()];
 			for (int i = 0; i < a.length; i++) {
@@ -27,7 +34,6 @@ public class KeyBoardInput extends KeyAdapter {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyChar());
 		pressedKeys.add((int) e.getKeyChar());
 		e.consume();
 	}

@@ -3,7 +3,6 @@ package com.gameon.hitboxers;
 import java.awt.Image;
 
 public class Enemy extends Hitboxer {
-	private boolean alive = true;
 
 	public Enemy(Image image, Image[] da) {
 		super(image, da);
@@ -12,11 +11,10 @@ public class Enemy extends Hitboxer {
 	}
 
 	public void move(double amount) {
-
+		this.y += amount;
 	}
 
 	public boolean hit() {
 		return true;
 	}
-
 }

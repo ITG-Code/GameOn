@@ -21,13 +21,11 @@ public class Game extends Applet implements Runnable {
 	private int ticks = 0;
 	private int aliveTime = 0;
 	private long timer = 0;
-
 	private Engine engine;
-	private ResourceLoader rl;
 	private KeyBoardInput input;
 
 	public void init() {
-
+		input = new KeyBoardInput();
 		addKeyListener(input);
 		image = createImage(WIDTH, HEIGHT);
 		g = (Graphics2D) image.getGraphics();
@@ -54,7 +52,6 @@ public class Game extends Applet implements Runnable {
 
 		if (engine.getShots() != null) {
 			for (int i = 0; i < engine.getShots().size(); i++) {
-				System.out.println(engine.getShots().size());
 				engine.getShots().get(i).draw(g);
 			}
 		}
@@ -77,16 +74,16 @@ public class Game extends Applet implements Runnable {
 		long lastTime = System.nanoTime();
 		final double ns = 1000000000.0 / 60.0; // A billion
 		double tickDelta = 0;
-		int[] keys;
+
 		while (thread != null) {
 			now = System.nanoTime();
 			tickDelta += (now - lastTime);
 			lastTime = now;
 			while (tickDelta >= ns) {
-				try {
-					keys = input.getKeys();
+				if (input.getLength() > 0) {
+					int[] keys = input.getKeys();
 					engine.tick(keys);
-				} catch (NullPointerException e) {
+				} else {
 					engine.tick();
 				}
 

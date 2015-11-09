@@ -37,10 +37,10 @@ public class Hitboxer {
 
 	}
 
-	public boolean killed() {
+
+	public boolean killed(){
 		return killed;
 	}
-
 	public void kill() {
 		this.killed = true;
 
@@ -60,5 +60,24 @@ public class Hitboxer {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public boolean isKilled() {
+		if(this.killed && this.deathAnimation.length <= this.deathState){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+		
+	}
+
+	public byte getDeathState() {
+		return deathState;
+	}
+
+	public double getMax() {
+		return max;
 	}
 }
