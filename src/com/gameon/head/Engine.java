@@ -116,6 +116,7 @@ public class Engine {
 					if(collisionDetect(enemies.get(i), shots.get(j))){
 						enemies.remove(i);
 						shots.remove(j);
+						break;
 					}
 				}
 		}
@@ -131,7 +132,6 @@ public class Engine {
 		} else {
 			return false;
 		}*/
-		System.out.println(hb1.getY() + " vs " + hb2.getY());
 		if(hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getX() + hb1.getWidth() > hb2.getX() && hb1.getX() < hb2.getX()){
 			return true;
 		}
