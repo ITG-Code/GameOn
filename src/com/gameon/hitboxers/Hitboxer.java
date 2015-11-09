@@ -21,20 +21,27 @@ public class Hitboxer {
 		y = 100;
 		width = 100;
 		height = 100;
-		this.deathAnimation = deathAnimation;
+		if(deathAnimation == null){
+			deathAnimation = new Image[0];
+		}
+		else{
+			this.deathAnimation = deathAnimation;
+		}
+		
 		this.lane = 1;
 	}
 
 	public void draw(Graphics2D g) {
-		if (killed) {
+		g.drawImage(image, (500 + (100 * lane)), y, width, height, null);
+		/*if (killed) {
 			if(!(deathAnimation.length < deathState)){
 				g.drawImage(deathAnimation[deathState], x, y, width, height, null);
 				deathState++;
 			}
 		} else {
-			g.drawImage(image, (500 + (100 * lane)), y, width, height, null);
+			
 		}
-
+		*/
 	}
 
 

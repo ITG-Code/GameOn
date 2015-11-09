@@ -10,11 +10,18 @@ public class Player extends Speeder {
 	}
 
 	public void moveLeft() {
-		this.x -= 40;
-		setLane(getLane() - 1);
+		System.out.println(getLane());
+		if(getLane() >= 0){
+			setLane(getLane() - 1);
+		}
+		
 	}
 
 	public void moveRight() {
-		setLane(getLane() + 1);
+		System.out.println(getLane());
+		if(getLane() <=2){
+			setLane(getLane() + 1);
+		}
+		
 	}
 }

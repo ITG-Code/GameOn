@@ -45,6 +45,7 @@ public class Game extends Applet implements Runnable {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		// player.draw(g);
 		g.drawImage(engine.getBackground(), 0, 0, null);
+		g.drawImage(engine.getLines(), 0, 0, null);
 		String pressedKeys = "";
 		// System.out.println(inputs);
 		g.drawString(pressedKeys, 200, 200);

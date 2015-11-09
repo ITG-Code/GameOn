@@ -27,7 +27,7 @@ public class Engine {
 
 		this.p = new Player(rl.getShip(), null);
 		this.sn = new SuperNova(rl.getShip(), null);
-		enemies.add(new Enemy(rl.getRedEnemy(), null));
+	//	enemies.add(new Enemy(rl.getGreenEnemy(), rl.getRedDeath()));
 	}
 	public void tick() {
 		despawn();
@@ -35,6 +35,7 @@ public class Engine {
 		killHit();
 	}
 	public void tick(int[] keys) {
+		
 		despawn();
 		inputMovement(keys);
 		move();
@@ -166,5 +167,8 @@ public class Engine {
 	}
 	public Image getBackground(){
 		return rl.getBackground();
+	}
+	public Image getLines(){
+		return rl.getLines();
 	}
 }
