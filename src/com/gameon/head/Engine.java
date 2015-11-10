@@ -2,13 +2,13 @@ package com.gameon.head;
 
 import java.awt.Image;
 import java.util.LinkedList;
+import java.util.Random;
 
 import com.gameon.hitboxers.Enemy;
 import com.gameon.hitboxers.Hitboxer;
 import com.gameon.hitboxers.Player;
 import com.gameon.hitboxers.Shot;
 import com.gameon.hitboxers.SuperNova;
-import com.gameon.utility.Spawn;
 
 public class Engine {
 	private Player p;
@@ -16,8 +16,6 @@ public class Engine {
 	private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
 	private LinkedList<Shot> shots = new LinkedList<Shot>();
 	private ResourceLoader rl;
-	
-	private Spawner  s;
 	
 	public Engine(String OS) {
 		if (OS.indexOf("win") >= 0) {
@@ -34,14 +32,14 @@ public class Engine {
 	}
 	public void tick() {
 		despawn();
-		//spawn();
+		spawn();
 		move();
 		killHit();
 	}
 	public void tick(int[] keys) {
 		
 		despawn();
-		//spawn();
+		spawn();
 		inputMovement(keys);
 		move();
 		killHit();
@@ -110,13 +108,36 @@ public class Engine {
 		}
 		
 	}
+	
+	private long lastSpawn = 0;
+	
 	private void spawn(){
-		boolean c = true;
+		
+		Random r = new Random();
+		
+		if(lastSpawn + 1000000000 < System.nanoTime()){
+			lastSpawn = System.nanoTime();
+			int lane = r.nextInt(3);
+			int type = r.nextInt(3);
+			
+			if(type == 0){
+				enemies.add(new Enemy(rl.getGreenEnemy(), rl.getGreenDeath(), type, lane));
+			}
+			if(type == 1){
+				enemies.add(new Enemy(rl.getRedEnemy(), rl.getRedDeath(), type, lane));
+			}
+			if(type == 2){
+				enemies.add(new Enemy(rl.getBlueEnemy(), rl.getBlueDeath(), type, lane));
+			}
+			
+		}
+		
+		/*boolean c = true;
 		while(c){
 			Spawn ns = s.tick(enemies);
 			if(ns == null){
 				c = false;
-				continue;
+				break;
 			}
 			if(ns.getType() == 0){
 				enemies.add(new Enemy(rl.getGreenEnemy(), rl.getGreenDeath(), ns.getType(), ns.getLane()));
@@ -129,7 +150,9 @@ public class Engine {
 			}
 			
 			
-		}
+		}*/
+		
+
 	}
 	
 	
@@ -161,15 +184,15 @@ public class Engine {
 	}
 
 	public void greenShot() {
-		shots.add(new Shot(rl.getGreenShot(),null , p, (byte) 0));
+		shots.add(new Shot(rl.getGreenShot(),null , p, 0));
 	}
 
 	public void redShot() {
-		shots.add(new Shot(rl.getRedShot(), null, p, (byte) 1));
+		shots.add(new Shot(rl.getRedShot(), null, p, 1));
 	}
 
 	public void blueShot() {
-		shots.add(new Shot(rl.getBlueShot(), null, p, (byte) 2));
+		shots.add(new Shot(rl.getBlueShot(), null, p, 2));
 	}
 
 	public Player getPlayer() {

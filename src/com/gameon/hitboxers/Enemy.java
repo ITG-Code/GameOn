@@ -1,6 +1,5 @@
 package com.gameon.hitboxers;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
 
 public class Enemy extends Hitboxer {
@@ -10,7 +9,16 @@ public class Enemy extends Hitboxer {
 		super(image, da);
 		x = 600;
 		y = 20;
-		this.setLane(lane);
+		if(lane == 0){
+			this.setLane(-1);
+		}
+		else if(lane == 1){
+			this.setLane(1);
+		}
+		else if(lane == 2){
+			this.setLane(3);
+		}
+		
 	}
 
 	public void move(double amount) {
