@@ -12,6 +12,7 @@ public class Player extends Speeder {
 	}
 
 	public void moveLeft() {
+		move();
 		if(getLane() >= 0){
 			setLane(getLane() - 1);
 		}
@@ -19,6 +20,7 @@ public class Player extends Speeder {
 	}
 
 	public void moveRight() {
+		move();
 		if(getLane() <=2){
 			setLane(getLane() + 1);
 		}

@@ -4,17 +4,17 @@ import java.awt.Graphics2D;
 import java.awt.Image;
  
 public class Shot extends Hitboxer {
-        int type;
+        private int type;
  
        
-        public Shot(Image image, Image[] da, Player p, int type) {
+        public Shot(Image image, Image[] da, Player p, int t) {
                 super(image, da);
                 this.x = p.x + 37;
                 this.setLane(p.getLane());
                 this.y = p.y - 80;
                 this.width = 27;
                 this.height = 69;
-                this.type= type;
+                this.setType(t);
         }
         public void move(){
                 //y-=20;
@@ -53,5 +53,10 @@ public class Shot extends Hitboxer {
                 }
  
         }
-       
+		public int getType() {
+			return type;
+		}
+		public void setType(int type){
+			this.type = type;
+		}
 }

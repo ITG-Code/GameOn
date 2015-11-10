@@ -159,12 +159,12 @@ public class Engine {
 	private void killHit() {
 		// Detects any enemy that has crashed into the player
 		for (int i = 0; i < enemies.size(); i++) {
-			if (collisionDetect(enemies.get(i), p)) {
+			if (EnemyHit(enemies.get(i), p)) {
 					enemies.remove(i);
 					p.kill();
 				}
 				for(int j = 0; j < shots.size(); j++){
-					if(collisionDetect(enemies.get(i), shots.get(j))){
+					if(friendlyHit(enemies.get(i), shots.get(j))){
 						enemies.remove(i);
 						shots.remove(j);
 						break;
@@ -174,7 +174,16 @@ public class Engine {
 
 	}
 	
-	private boolean collisionDetect(Hitboxer hb1, Hitboxer hb2) {	
+	private boolean friendlyHit(Enemy hb1, Shot hb2) {	
+		if(hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getLane() == hb2.getLane() && hb1.getType() == hb2.getType()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	private boolean EnemyHit(Enemy hb1, Player hb2){
 		if(hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getLane() == hb2.getLane()){
 			return true;
 		}
@@ -182,7 +191,8 @@ public class Engine {
 			return false;
 		}
 	}
-
+	
+	
 	public void greenShot() {
 		shots.add(new Shot(rl.getGreenShot(),null , p, 0));
 	}
