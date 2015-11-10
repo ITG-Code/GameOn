@@ -34,8 +34,18 @@ public class KeyBoardInput extends KeyAdapter {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		pressedKeys.add((int) e.getKeyChar());
-		e.consume();
+		boolean clear = true;
+		for(int i = 0; i < pressedKeys.size(); i++){
+			if(pressedKeys.equals((int) e.getKeyChar())){
+				clear = false;
+				break;
+			}
+		}
+		if(clear){
+			pressedKeys.add((int) e.getKeyChar());
+			e.consume();
+		}
+		
 	}
 
 	public void keyTyped(KeyEvent e) {

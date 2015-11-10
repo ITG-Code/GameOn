@@ -46,6 +46,7 @@ public class Game extends Applet implements Runnable {
 		// player.draw(g);
 		g.drawImage(engine.getBackground(), 0, 0, null);
 		g.drawImage(engine.getLines(), 0, 0, null);
+		g.setColor(Color.GREEN);
 		String pressedKeys = "";
 		// System.out.println(inputs);
 		g.drawString(pressedKeys, 200, 200);
@@ -61,7 +62,9 @@ public class Game extends Applet implements Runnable {
 				engine.getShots().get(i).draw(g);
 			}
 		}
-
+		/////////// Debug perpouse
+		g.drawString("Player lane: " + Integer.toString(engine.getPlayer().getLane()), 10, 500);
+		///////////
 		g.drawString("Ticks: " + this.ticks + " FPS: " + this.frames, 10, 10);
 		g.drawString("Time alive: " + aliveTime + " seconds", 1100, 10);
 		page.drawImage(image, 0, 0, this);
@@ -72,6 +75,7 @@ public class Game extends Applet implements Runnable {
 		paint(page);
 	}
 
+	
 	@Override
 	public void run() {
 		long startTime = System.currentTimeMillis();
