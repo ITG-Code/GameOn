@@ -8,6 +8,7 @@ import com.gameon.hitboxers.Hitboxer;
 import com.gameon.hitboxers.Player;
 import com.gameon.hitboxers.Shot;
 import com.gameon.hitboxers.SuperNova;
+import com.gameon.utility.Spawn;
 
 public class Engine {
 	private Player p;
@@ -15,7 +16,9 @@ public class Engine {
 	private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
 	private LinkedList<Shot> shots = new LinkedList<Shot>();
 	private ResourceLoader rl;
-
+	
+	private Spawner  s;
+	
 	public Engine(String OS) {
 		if (OS.indexOf("win") >= 0) {
 			rl = new ResourceLoader("\\");
@@ -31,12 +34,14 @@ public class Engine {
 	}
 	public void tick() {
 		despawn();
+		//spawn();
 		move();
 		killHit();
 	}
 	public void tick(int[] keys) {
 		
 		despawn();
+		//spawn();
 		inputMovement(keys);
 		move();
 		killHit();
@@ -105,6 +110,29 @@ public class Engine {
 		}
 		
 	}
+	private void spawn(){
+		boolean c = true;
+		while(c){
+			Spawn ns = s.tick(enemies);
+			if(ns == null){
+				c = false;
+				continue;
+			}
+			if(ns.getType() == 0){
+				enemies.add(new Enemy(rl.getGreenEnemy(), rl.getGreenDeath(), ns.getType(), ns.getLane()));
+			}
+			else if(ns.getType() == 1){
+				enemies.add(new Enemy(rl.getRedEnemy(), rl.getRedDeath(), ns.getType(), ns.getLane()));
+			}
+			else if(ns.getType() == 2){
+				enemies.add(new Enemy(rl.getBlueEnemy(), rl.getBlueDeath(), ns.getType(), ns.getLane()));
+			}
+			
+			
+		}
+	}
+	
+	
 	private void killHit() {
 		// Detects any enemy that has crashed into the player
 		for (int i = 0; i < enemies.size(); i++) {
@@ -133,15 +161,15 @@ public class Engine {
 	}
 
 	public void greenShot() {
-		shots.add(new Shot(rl.getGreenShot(),null , p, (byte) 1));
+		shots.add(new Shot(rl.getGreenShot(),null , p, (byte) 0));
 	}
 
 	public void redShot() {
-		shots.add(new Shot(rl.getRedShot(), null, p, (byte) 2));
+		shots.add(new Shot(rl.getRedShot(), null, p, (byte) 1));
 	}
 
 	public void blueShot() {
-		shots.add(new Shot(rl.getBlueShot(), null, p, (byte) 3));
+		shots.add(new Shot(rl.getBlueShot(), null, p, (byte) 2));
 	}
 
 	public Player getPlayer() {

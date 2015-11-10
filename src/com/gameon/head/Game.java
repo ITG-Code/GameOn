@@ -13,7 +13,7 @@ public class Game extends Applet implements Runnable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Thread thread = null;
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
@@ -75,7 +75,6 @@ public class Game extends Applet implements Runnable {
 		paint(page);
 	}
 
-	
 	@Override
 	public void run() {
 		long startTime = System.currentTimeMillis();

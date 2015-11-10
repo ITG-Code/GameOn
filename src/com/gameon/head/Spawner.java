@@ -1,24 +1,48 @@
 package com.gameon.head;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import com.gameon.hitboxers.Enemy;
+import com.gameon.utility.Spawn;
 
 public class Spawner {
 	private int spawnRate;
+	private Random r;
+	private static int noSpawn;
 
 	public Spawner() {
-		
+
 	}
 
-	public void setSpawnRate(int r){
-		spawnRate = r;
+	public void setSpawnRate(int rate) {
+		r = new Random();
+		spawnRate = rate;
 	}
 
-	public Enemy tick(LinkedList<Enemy> e){
-		LinkedList<Integer> s = new LinkedList<Integer>();
-		for(int i = 0; i < e.size(); i++){
+	public Spawn tick(LinkedList<Enemy> e) {
+		boolean[] filled = { false, false, false };
+		byte filledSlots = 0;
+
+		for (int i = 0; i < e.size(); i++) {
+			if (e.get(i).getY() < 200) {
+				if (e.get(i).getLane() == -1 && e.get(i).getY() > noSpawn) {
+					filled[0] = true;
+					filledSlots++;
+				} else if (e.get(i).getLane() == 1 && e.get(i).getY() > noSpawn) {
+					filled[1] = true;
+					filledSlots++;
+				} else if (e.get(i).getLane() == 3 && e.get(i).getY() > noSpawn) {
+					filled[2] = true;
+					filledSlots++;
+				}
+
+			}
 		}
-		return null;
+		int et = (int) (Math.random() * 2);
+		int lane =  (int) (Math.random() * filledSlots);
+		
+		
+		return new Spawn(et, lane);
 	}
 }
