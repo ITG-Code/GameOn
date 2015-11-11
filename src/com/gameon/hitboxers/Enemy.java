@@ -18,7 +18,7 @@ public class Enemy extends Hitboxer {
 		else if(lane == 2){
 			this.setLane(3);
 		}
-		
+		this.type = type;
 	}
 
 	public void move(double amount) {

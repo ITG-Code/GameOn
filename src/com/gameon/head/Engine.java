@@ -16,7 +16,14 @@ public class Engine {
 	private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
 	private LinkedList<Shot> shots = new LinkedList<Shot>();
 	private ResourceLoader rl;
+	private int score = 0;
+	private float speed = 1;
+	private double minimumSpeed = 0.5;
 	
+	private float multiplier = 1;
+	
+	public boolean gameover = false;
+
 	public Engine(String OS) {
 		if (OS.indexOf("win") >= 0) {
 			rl = new ResourceLoader("\\");
@@ -28,23 +35,29 @@ public class Engine {
 
 		this.p = new Player(rl.getShip(), null);
 		this.sn = new SuperNova(rl.getShip(), null);
-	//	enemies.add(new Enemy(rl.getGreenEnemy(), rl.getRedDeath()));
+		// enemies.add(new Enemy(rl.getGreenEnemy(), rl.getRedDeath()));
 	}
+
 	public void tick() {
+		speedCheck();
 		despawn();
 		spawn();
 		move();
 		killHit();
 	}
+
 	public void tick(int[] keys) {
-		
+		speedCheck();
 		despawn();
 		spawn();
 		inputMovement(keys);
 		move();
 		killHit();
 	}
-
+	private void speedCheck(){
+		/*minimumSpeed+=0.0003;
+		if(minimumSpeed => )*/
+	}
 	private void inputMovement(int[] keys) {
 		for (int key : keys) {
 
@@ -57,10 +70,10 @@ public class Engine {
 				p.moveRight();
 			}
 			if (key == 83 || key == 115) { // S
-				// p.userDecelarate();
+				speed*=0.98;
 			}
 			if (key == 87 || key == 119) { // W
-				//p.accelarate();
+				speed*=1.02;
 			}
 			if (key == 66 || key == 98) { // B
 				greenShot();
@@ -77,124 +90,125 @@ public class Engine {
 	}
 
 	private void move() {
-		
+
 		sn.addDistance();
 		p.addDistance();
 		if (enemies != null) {
 			for (int i = 0; i < enemies.size(); i++) {
-				enemies.get(i).move(p.getSpeed());
+				enemies.get(i).move(speed);
 			}
 		}
 
 		for (int i = 0; i < shots.size(); i++) {
-			shots.get(i).move();
+			shots.get(i).move(speed);
 		}
 		// Add deathAnimation
-		
 
 	}
 
-	
-	private void despawn(){
+	private void despawn() {
 		for (int i = 0; i < enemies.size(); i++) {
-			if (enemies.get(i).getX() <= -100 || enemies.get(i).getX() >= 1300 || enemies.get(i).getY() <= -100 || enemies.get(i).getY() >= 750  || enemies.get(i).isKilled()) {
+			if (enemies.get(i).getX() <= -100 || enemies.get(i).getX() >= 1300 || enemies.get(i).getY() <= -100
+					|| enemies.get(i).getY() >= 750 || enemies.get(i).isKilled()) {
 				enemies.remove(i);
 			}
 		}
 		for (int i = 0; i < shots.size(); i++) {
-			if (shots.get(i).getX() <= -100 || shots.get(i).getX() >= 1300 || shots.get(i).getY() <= -100 || shots.get(i).getY() >= 750) {
+			if (shots.get(i).getX() <= -100 || shots.get(i).getX() >= 1300 || shots.get(i).getY() <= -100
+					|| shots.get(i).getY() >= 750) {
 				shots.remove(i);
 			}
 		}
-		
+
 	}
-	
+
 	private long lastSpawn = 0;
-	
-	private void spawn(){
-		
+
+	private void spawn() {
+
 		Random r = new Random();
-		
-		if(lastSpawn + 1000000000 < System.nanoTime()){
+
+		if (lastSpawn + 1000000000 < System.nanoTime()) {
 			lastSpawn = System.nanoTime();
 			int lane = r.nextInt(3);
 			int type = r.nextInt(3);
-			
-			if(type == 0){
+			System.out.println("Lane: " + lane + " type: type");
+			if (type == 0) {
 				enemies.add(new Enemy(rl.getGreenEnemy(), rl.getGreenDeath(), type, lane));
 			}
-			if(type == 1){
+			if (type == 1) {
 				enemies.add(new Enemy(rl.getRedEnemy(), rl.getRedDeath(), type, lane));
 			}
-			if(type == 2){
+			if (type == 2) {
 				enemies.add(new Enemy(rl.getBlueEnemy(), rl.getBlueDeath(), type, lane));
 			}
-			
+
 		}
-		
-		/*boolean c = true;
-		while(c){
-			Spawn ns = s.tick(enemies);
-			if(ns == null){
-				c = false;
-				break;
-			}
-			if(ns.getType() == 0){
-				enemies.add(new Enemy(rl.getGreenEnemy(), rl.getGreenDeath(), ns.getType(), ns.getLane()));
-			}
-			else if(ns.getType() == 1){
-				enemies.add(new Enemy(rl.getRedEnemy(), rl.getRedDeath(), ns.getType(), ns.getLane()));
-			}
-			else if(ns.getType() == 2){
-				enemies.add(new Enemy(rl.getBlueEnemy(), rl.getBlueDeath(), ns.getType(), ns.getLane()));
-			}
-			
-			
-		}*/
-		
+
+		/*
+		 * boolean c = true; while(c){ Spawn ns = s.tick(enemies); if(ns ==
+		 * null){ c = false; break; } if(ns.getType() == 0){ enemies.add(new
+		 * Enemy(rl.getGreenEnemy(), rl.getGreenDeath(), ns.getType(),
+		 * ns.getLane())); } else if(ns.getType() == 1){ enemies.add(new
+		 * Enemy(rl.getRedEnemy(), rl.getRedDeath(), ns.getType(),
+		 * ns.getLane())); } else if(ns.getType() == 2){ enemies.add(new
+		 * Enemy(rl.getBlueEnemy(), rl.getBlueDeath(), ns.getType(),
+		 * ns.getLane())); }
+		 * 
+		 * 
+		 * }
+		 */
 
 	}
-	
-	
+
 	private void killHit() {
 		// Detects any enemy that has crashed into the player
 		for (int i = 0; i < enemies.size(); i++) {
 			if (EnemyHit(enemies.get(i), p)) {
-					enemies.remove(i);
-					p.kill();
-				}
-				for(int j = 0; j < shots.size(); j++){
-					if(friendlyHit(enemies.get(i), shots.get(j))){
+				enemies.remove(i);
+				this.gameover = true;
+			}
+			for (int j = 0; j < shots.size(); j++) {
+				if (friendlyHit(enemies.get(i), shots.get(j))) {
+					if (enemies.get(i).getType() == shots.get(j).getType()) {
 						enemies.remove(i);
 						shots.remove(j);
+						multiplier++;
+						makeScore();
 						break;
+					} else {
+						shots.get(j).reverse();
+						multiplier = 0;
 					}
+
 				}
+			}
 		}
 
 	}
-	
-	private boolean friendlyHit(Enemy hb1, Shot hb2) {	
-		if(hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getLane() == hb2.getLane() && hb1.getType() == hb2.getType()){
+
+	private boolean friendlyHit(Enemy hb1, Shot hb2) {
+		if (hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getLane() == hb2.getLane()) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
-	
-	private boolean EnemyHit(Enemy hb1, Player hb2){
-		if(hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getLane() == hb2.getLane()){
+
+	private boolean EnemyHit(Enemy hb1, Player hb2) {
+		if (hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getLane() == hb2.getLane()) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
-	
+
+	private void makeScore(){
+		score++;
+	}
 	
 	public void greenShot() {
-		shots.add(new Shot(rl.getGreenShot(),null , p, 0));
+		shots.add(new Shot(rl.getGreenShot(), null, p, 0));
 	}
 
 	public void redShot() {
@@ -220,16 +234,24 @@ public class Engine {
 	public SuperNova getSuperNova() {
 		return sn;
 	}
+
 	public Player getP() {
 		return p;
 	}
+
 	public SuperNova getSn() {
 		return sn;
 	}
-	public Image getBackground(){
+
+	public Image getBackground() {
 		return rl.getBackground();
 	}
-	public Image getLines(){
+
+	public Image getLines() {
 		return rl.getLines();
+	}
+
+	public int getScore() {
+		return score;
 	}
 }

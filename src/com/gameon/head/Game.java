@@ -70,9 +70,23 @@ public class Game extends Applet implements Runnable {
 		page.drawImage(image, 0, 0, this);
 
 	}
-
+	public void losePaint(Graphics page){
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.setColor(Color.GREEN);
+		g.drawString("Game Over! Fatherfucker", 300, 200);
+		g.drawString("Score: " + engine.getScore(), 300, 230);
+		
+		page.drawImage(image, 0, 0, this);
+	}
 	public void update(Graphics page) {
-		paint(page);
+		if(engine.gameover == true){
+			losePaint(page);
+		}
+		else{
+			paint(page);
+		}
+		
 	}
 
 	@Override
@@ -88,7 +102,7 @@ public class Game extends Applet implements Runnable {
 			now = System.nanoTime();
 			tickDelta += (now - lastTime);
 			lastTime = now;
-			while (tickDelta >= ns) {
+			while (tickDelta >= ns && engine.gameover == false) {
 				if (input.getLength() > 0) {
 					int[] keys = input.getKeys();
 					engine.tick(keys);

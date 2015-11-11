@@ -5,8 +5,7 @@ import java.awt.Image;
  
 public class Shot extends Hitboxer {
         private int type;
- 
-       
+        private boolean reverse;
         public Shot(Image image, Image[] da, Player p, int t) {
                 super(image, da);
                 this.x = p.x + 37;
@@ -16,23 +15,23 @@ public class Shot extends Hitboxer {
                 this.height = 69;
                 this.setType(t);
         }
-        public void move(){
-                //y-=20;
-                int grad = 0;
-                if(getLane() == 3)
-                        grad = 250;
-                if(getLane() == 1)
-                        grad = 270;
-                if (getLane()== -1)
-                        grad = 290;
-                       
-                x += 15 * Math.cos(Math.toRadians(grad));
-                y += 15 * Math.sin(Math.toRadians(grad));
-               
-               
-               
-       
-        }
+        public void move(float gameSpeed){
+            int grad = 0;
+            if(getLane() == 3)
+                    grad = 250;
+            if(getLane() == 1)
+                    grad = 270;
+            if (getLane()== -1)
+                    grad = 290;
+        	if(reverse){
+        		 x -= 15 * Math.cos(Math.toRadians(grad));
+                 y -= 15 * Math.sin(Math.toRadians(grad));
+        	}
+        	else{
+        		 x += 15 * gameSpeed * Math.cos(Math.toRadians(grad));
+                 y += 15 * gameSpeed * Math.sin(Math.toRadians(grad));
+        	}
+    }
         public void draw(Graphics2D g) {
                 if (isKilled()) {
                         if(!(getDeathAnimation().length < getDeathState())){
@@ -52,6 +51,9 @@ public class Shot extends Hitboxer {
                        
                 }
  
+        }
+        public void reverse(){
+        	this.reverse = !reverse;
         }
 		public int getType() {
 			return type;
