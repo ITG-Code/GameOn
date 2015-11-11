@@ -13,7 +13,7 @@ public class Game extends Applet implements Runnable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Thread thread = null;
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
@@ -26,9 +26,13 @@ public class Game extends Applet implements Runnable {
 	private int ticks = 0;
 	private int aliveTime = 0;
 	private long timer = 0;
+	
+	
 	private Engine engine;
 	private KeyBoardInput input;
-
+	
+	
+	//Initiates the applet
 	public void init() {
 		input = new KeyBoardInput();
 		addKeyListener(input);
@@ -39,13 +43,14 @@ public class Game extends Applet implements Runnable {
 		engine = new Engine(OS);
 		// player = new Player(temp);
 	}
-
+	//Paints the actual game
 	public void paint(Graphics page) {
 		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		// player.draw(g);
 		g.drawImage(engine.getBackground(), 0, 0, null);
 		g.drawImage(engine.getLines(), 0, 0, null);
+		g.setColor(Color.GREEN);
 		String pressedKeys = "";
 		// System.out.println(inputs);
 		g.drawString(pressedKeys, 200, 200);
@@ -61,17 +66,35 @@ public class Game extends Applet implements Runnable {
 				engine.getShots().get(i).draw(g);
 			}
 		}
-
+		/////////// Debug perpouse
+		g.drawString("Player lane: " + Integer.toString(engine.getPlayer().getLane()), 10, 500);
+		///////////
 		g.drawString("Ticks: " + this.ticks + " FPS: " + this.frames, 10, 10);
 		g.drawString("Time alive: " + aliveTime + " seconds", 1100, 10);
 		page.drawImage(image, 0, 0, this);
 
 	}
-
-	public void update(Graphics page) {
-		paint(page);
+	//Paints the gameover screen
+	public void losePaint(Graphics page){
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.setColor(Color.GREEN);
+		g.drawImage(engine.getGameOver(), 200, 250, null);
+		g.drawString("Score: " + engine.getScore(), 300, 350);
+		
+		page.drawImage(image, 0, 0, this);
 	}
-
+	//Calls the paint function if the it's not game over and the endscreen if it's gameover
+	public void update(Graphics page) {
+		if(engine.gameover == true){
+			losePaint(page);
+		}
+		else{
+			paint(page);
+		}
+		
+	}
+	
 	@Override
 	public void run() {
 		long startTime = System.currentTimeMillis();
@@ -85,7 +108,7 @@ public class Game extends Applet implements Runnable {
 			now = System.nanoTime();
 			tickDelta += (now - lastTime);
 			lastTime = now;
-			while (tickDelta >= ns) {
+			while (tickDelta >= ns && engine.gameover == false) {
 				if (input.getLength() > 0) {
 					int[] keys = input.getKeys();
 					engine.tick(keys);
@@ -110,14 +133,14 @@ public class Game extends Applet implements Runnable {
 
 		}
 	}
-
+	//Starts the thread
 	public void start() {
 		if (thread == null) {
 			thread = new Thread(this);
 			thread.start();
 		}
 	}
-
+	//Stops the thread
 	public void stop() {
 		thread = null;
 	}

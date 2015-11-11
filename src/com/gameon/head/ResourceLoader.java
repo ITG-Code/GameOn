@@ -21,7 +21,9 @@ public class ResourceLoader {
 	private Image[] green_death;
 
 	private Image lines;
-
+	private Image gameOver;
+	
+	//Loads images into the game
 	public ResourceLoader(String r) {
 
 		String[] imageLocations = { "images\\background.png", "images\\ship.png", "images\\asteroid.png",
@@ -57,7 +59,11 @@ public class ResourceLoader {
 				"images\\blue_death\\13.png", "images\\blue_death\\14.png", "images\\blue_death\\15.png",
 				"images\\blue_death\\16.png", "images\\blue_death\\17.png", "images\\blue_death\\18.png",
 				"images\\blue_death\\19.png", "images\\blue_death\\20.png", "images\\blue_death\\21.png",
-				"images\\blue_death\\22.png", "images\\blue_death\\23.png", "images\\blue_death\\24.png", };
+				"images\\blue_death\\22.png", "images\\blue_death\\23.png", "images\\blue_death\\24.png", 
+				
+				"images\\game_over.png"
+		
+		};
 				/*
 				 * for(int i = 0; i < imageLocations.length;i++){
 				 * imageLocations[i] = imageLocations[i].replaceAll("/", r);
@@ -91,7 +97,7 @@ public class ResourceLoader {
 		for (int i = 0; i < 23; i++) {
 			blue_death[i] = new ImageIcon(imageLocations[58 + i]).getImage();
 		}
-
+		gameOver = new ImageIcon(imageLocations[82]).getImage();
 		System.out.println(background.getWidth(null));
 
 	}
@@ -143,6 +149,10 @@ public class ResourceLoader {
 
 	public Image[] getGreenDeath() {
 		return green_death;
+	}
+
+	public Image getGameOver() {
+		return gameOver;
 	}
 
 }

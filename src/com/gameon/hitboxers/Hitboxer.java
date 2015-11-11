@@ -15,39 +15,63 @@ public class Hitboxer {
 	private int deathState = 0;
 	private final double max = 3.1;
 	private int lane;
+
 	public Hitboxer(Image image, Image[] deathAnimation) {
 		this.image = image;
 		x = 100;
 		y = 100;
 		width = 100;
 		height = 100;
-		if(deathAnimation == null){
+		if (deathAnimation == null) {
 			deathAnimation = new Image[0];
-		}
-		else{
+		} else {
 			this.deathAnimation = deathAnimation;
 		}
-		
+
 		this.lane = 1;
 	}
 
+	// moves the Hitboxer diagonally if the Hitboxers lane is -1 or 3 and moves
+	// strait down if it's 1
+	public void move() {
+		int grad = 0;
+		if (getLane() == 3)
+			grad = 250;
+		if (getLane() == 1)
+			grad = 270;
+		if (getLane() == -1)
+			grad = 290;
+
+		x += 15 * Math.cos(Math.toRadians(grad));
+		y += 15 * Math.sin(Math.toRadians(grad));
+
+	}
+	//Draws image of the Hitboxer
 	public void draw(Graphics2D g) {
-		g.drawImage(image, (500 + (100 * lane)), y, width, height, null);
-		/*if (killed) {
-			if(!(deathAnimation.length < deathState)){
-				g.drawImage(deathAnimation[deathState], x, y, width, height, null);
-				deathState++;
-			}
-		} else {
-			
-		}
-		*/
+		/*
+		 * if (isKilled()) { if(!(getDeathAnimation().length <
+		 * getDeathState())){ g.drawImage(getDeathAnimation()[getDeathState()],
+		 * x +(95*getLane()), y, width, height, null);
+		 * setDeathState(getDeathState() + 1); } } else {
+		 */
+		int lane = getLane();
+		if (lane == 3)
+			lane = 2;
+		if (lane == 1)
+			lane = 0;
+		if (lane == -1)
+			lane = -2;
+		g.drawImage(getImage(), x + (95 * lane), y, width, height, null);
+		// (540 + (100 * getLane()))
+
+		// }
+
 	}
 
-
-	public boolean killed(){
+	public boolean killed() {
 		return killed;
 	}
+
 	public void kill() {
 		this.killed = true;
 
@@ -70,10 +94,9 @@ public class Hitboxer {
 	}
 
 	public boolean isKilled() {
-		if(this.killed && this.deathAnimation.length <= this.deathState){
+		if (this.killed && this.deathAnimation.length <= this.deathState) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 

@@ -16,7 +16,8 @@ public class KeyBoardInput extends KeyAdapter {
 	public int getLength() {
 		return this.pressedKeys.size();
 	}
-
+	
+	//Returns an array of the keys that has been pressed since the last call of this method
 	public int[] getKeys() {
 
 		if (pressedKeys.isEmpty()) {
@@ -32,17 +33,37 @@ public class KeyBoardInput extends KeyAdapter {
 		}
 
 	}
-
+	//collects input and puts the input into the list if it's not already added
 	public void keyPressed(KeyEvent e) {
-		pressedKeys.add((int) e.getKeyChar());
-		e.consume();
+		boolean clear = true;
+		for(int i = 0; i < pressedKeys.size(); i++){
+			if(pressedKeys.equals((int) e.getKeyChar())){
+				clear = false;
+				break;
+			}
+		}
+		if(clear){
+			pressedKeys.add((int) e.getKeyChar());
+			e.consume();
+		}
+		
 	}
-
+	//collects input and puts the input into the list if it's not already added
 	public void keyTyped(KeyEvent e) {
-		pressedKeys.add((int) e.getKeyChar());
-		e.consume();
+		boolean clear = true;
+		for(int i = 0; i < pressedKeys.size(); i++){
+			if(pressedKeys.equals((int) e.getKeyChar())){
+				clear = false;
+				break;
+			}
+		}
+		if(clear){
+			pressedKeys.add((int) e.getKeyChar());
+			e.consume();
+		}
+		
 	}
-
+	//Gets rid of the released keys 
 	public void keyReleased(KeyEvent e) {
 		e.consume();
 	}
