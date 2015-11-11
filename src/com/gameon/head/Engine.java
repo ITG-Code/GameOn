@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import com.gameon.hitboxers.Enemy;
-import com.gameon.hitboxers.Hitboxer;
 import com.gameon.hitboxers.Player;
 import com.gameon.hitboxers.Shot;
 import com.gameon.hitboxers.SuperNova;
@@ -246,6 +245,9 @@ public class Engine {
 	public Image getBackground() {
 		return rl.getBackground();
 	}
+	public Image getGameOver(){
+		return rl.getGameOver();
+	}
 
 	public Image getLines() {
 		return rl.getLines();
@@ -254,4 +256,5 @@ public class Engine {
 	public int getScore() {
 		return score;
 	}
+
 }

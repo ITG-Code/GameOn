@@ -74,8 +74,8 @@ public class Game extends Applet implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		g.setColor(Color.GREEN);
-		g.drawString("Game Over! Fatherfucker", 300, 200);
-		g.drawString("Score: " + engine.getScore(), 300, 230);
+		g.drawImage(engine.getGameOver(), 200, 250, null);
+		g.drawString("Score: " + engine.getScore(), 300, 350);
 		
 		page.drawImage(image, 0, 0, this);
 	}
