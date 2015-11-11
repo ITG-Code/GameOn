@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import com.gameon.hitboxers.Enemy;
+import com.gameon.hitboxers.Hitboxer;
 import com.gameon.hitboxers.Player;
 import com.gameon.hitboxers.Shot;
 import com.gameon.hitboxers.SuperNova;
@@ -163,12 +164,12 @@ public class Engine {
 	private void killHit() {
 		// Detects any enemy that has crashed into the player
 		for (int i = 0; i < enemies.size(); i++) {
-			if (EnemyHit(enemies.get(i), p)) {
+			if (detectHit(enemies.get(i), p)) {
 				enemies.remove(i);
 				this.gameover = true;
 			}
 			for (int j = 0; j < shots.size(); j++) {
-				if (friendlyHit(enemies.get(i), shots.get(j))) {
+				if (detectHit(enemies.get(i), shots.get(j))) {
 					if (enemies.get(i).getType() == shots.get(j).getType()) {
 						enemies.remove(i);
 						shots.remove(j);
@@ -181,20 +182,15 @@ public class Engine {
 					}
 
 				}
+				if(detectHit(shots.get(j), p)){
+					this.gameover = true;
+				}
 			}
 		}
 
 	}
 
-	private boolean friendlyHit(Enemy hb1, Shot hb2) {
-		if (hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getLane() == hb2.getLane()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private boolean EnemyHit(Enemy hb1, Player hb2) {
+	private boolean detectHit(Hitboxer hb1, Hitboxer hb2) {
 		if (hb1.getY() + hb1.getHeight() > hb2.getY() && hb1.getY() < hb2.getY() && hb1.getLane() == hb2.getLane()) {
 			return true;
 		} else {
