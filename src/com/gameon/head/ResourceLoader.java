@@ -23,7 +23,7 @@ public class ResourceLoader {
 	private Image lines;
 	private Image gameOver;
 	
-
+	//Loads images into the game
 	public ResourceLoader(String r) {
 
 		String[] imageLocations = { "images\\background.png", "images\\ship.png", "images\\asteroid.png",

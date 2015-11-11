@@ -26,9 +26,13 @@ public class Game extends Applet implements Runnable {
 	private int ticks = 0;
 	private int aliveTime = 0;
 	private long timer = 0;
+	
+	
 	private Engine engine;
 	private KeyBoardInput input;
-
+	
+	
+	//Initiates the applet
 	public void init() {
 		input = new KeyBoardInput();
 		addKeyListener(input);
@@ -39,7 +43,7 @@ public class Game extends Applet implements Runnable {
 		engine = new Engine(OS);
 		// player = new Player(temp);
 	}
-
+	//Paints the actual game
 	public void paint(Graphics page) {
 		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -70,6 +74,7 @@ public class Game extends Applet implements Runnable {
 		page.drawImage(image, 0, 0, this);
 
 	}
+	//Paints the gameover screen
 	public void losePaint(Graphics page){
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -79,6 +84,7 @@ public class Game extends Applet implements Runnable {
 		
 		page.drawImage(image, 0, 0, this);
 	}
+	//Calls the paint function if the it's not game over and the endscreen if it's gameover
 	public void update(Graphics page) {
 		if(engine.gameover == true){
 			losePaint(page);
@@ -88,7 +94,7 @@ public class Game extends Applet implements Runnable {
 		}
 		
 	}
-
+	
 	@Override
 	public void run() {
 		long startTime = System.currentTimeMillis();
@@ -127,14 +133,14 @@ public class Game extends Applet implements Runnable {
 
 		}
 	}
-
+	//Starts the thread
 	public void start() {
 		if (thread == null) {
 			thread = new Thread(this);
 			thread.start();
 		}
 	}
-
+	//Stops the thread
 	public void stop() {
 		thread = null;
 	}

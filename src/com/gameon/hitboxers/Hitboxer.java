@@ -31,43 +31,42 @@ public class Hitboxer {
 		this.lane = 1;
 	}
 
-	 public void move(){
-         //y-=20;
-         int grad = 0;
-         if(getLane() == 3)
-                 grad = 250;
-         if(getLane() == 1)
-                 grad = 270;
-         if (getLane()== -1)
-                 grad = 290;
-                
-         x += 15 * Math.cos(Math.toRadians(grad));
-         y += 15 * Math.sin(Math.toRadians(grad));
-        
-        
-        
+	// moves the Hitboxer diagonally if the Hitboxers lane is -1 or 3 and moves
+	// strait down if it's 1
+	public void move() {
+		int grad = 0;
+		if (getLane() == 3)
+			grad = 250;
+		if (getLane() == 1)
+			grad = 270;
+		if (getLane() == -1)
+			grad = 290;
 
- }
- public void draw(Graphics2D g) {
-        /* if (isKilled()) {
-                 if(!(getDeathAnimation().length < getDeathState())){
-                         g.drawImage(getDeathAnimation()[getDeathState()], x +(95*getLane()), y, width, height, null);
-                         setDeathState(getDeathState() + 1);
-                 }
-         } else {*/
-                 int lane = getLane();
-                 if(lane == 3)
-                         lane=2;
-                 if(lane == 1)
-                         lane = 0;
-                 if(lane == -1)
-                         lane = -2;
-                 g.drawImage(getImage(),x +(95*lane), y, width, height, null);
-                 // (540 + (100 * getLane()))
-                
-      //   }
+		x += 15 * Math.cos(Math.toRadians(grad));
+		y += 15 * Math.sin(Math.toRadians(grad));
 
- }
+	}
+	//Draws image of the Hitboxer
+	public void draw(Graphics2D g) {
+		/*
+		 * if (isKilled()) { if(!(getDeathAnimation().length <
+		 * getDeathState())){ g.drawImage(getDeathAnimation()[getDeathState()],
+		 * x +(95*getLane()), y, width, height, null);
+		 * setDeathState(getDeathState() + 1); } } else {
+		 */
+		int lane = getLane();
+		if (lane == 3)
+			lane = 2;
+		if (lane == 1)
+			lane = 0;
+		if (lane == -1)
+			lane = -2;
+		g.drawImage(getImage(), x + (95 * lane), y, width, height, null);
+		// (540 + (100 * getLane()))
+
+		// }
+
+	}
 
 	public boolean killed() {
 		return killed;
