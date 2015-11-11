@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class ResourceLoader {
 	private Image background;
-	private Image ship;
+	private Image[] ship = new Image[3];
 
 	private Image redEnemy;
 	private Image blueEnemy;
@@ -61,7 +61,9 @@ public class ResourceLoader {
 				"images\\blue_death\\19.png", "images\\blue_death\\20.png", "images\\blue_death\\21.png",
 				"images\\blue_death\\22.png", "images\\blue_death\\23.png", "images\\blue_death\\24.png", 
 				
-				"images\\game_over.png"
+				"images\\game_over.png",
+				"images\\ship_left.png",
+				"images\\ship_right.png"
 		
 		};
 				/*
@@ -73,7 +75,7 @@ public class ResourceLoader {
 
 		// Loads the background image
 		background = new ImageIcon(imageLocations[0]).getImage();
-		ship = new ImageIcon(imageLocations[1]).getImage();
+		ship[1] = new ImageIcon(imageLocations[1]).getImage();
 
 		redEnemy = new ImageIcon(imageLocations[3]).getImage();
 		blueEnemy = new ImageIcon(imageLocations[4]).getImage();
@@ -98,6 +100,8 @@ public class ResourceLoader {
 			blue_death[i] = new ImageIcon(imageLocations[58 + i]).getImage();
 		}
 		gameOver = new ImageIcon(imageLocations[82]).getImage();
+		ship[0] = new ImageIcon(imageLocations[83]).getImage();
+		ship[2] = new ImageIcon(imageLocations[84]).getImage();
 		System.out.println(background.getWidth(null));
 
 	}
@@ -107,7 +111,7 @@ public class ResourceLoader {
 		return background;
 	}
 
-	public Image getShip() {
+	public Image[] getShip() {
 		return ship;
 	}
 

@@ -37,8 +37,7 @@ public class Engine {
 			rl = new ResourceLoader("Mac");
 		}
 
-		this.p = new Player(rl.getShip(), null);
-		this.sn = new SuperNova(rl.getShip(), null);
+		this.p = new Player(rl.getShip()[1], null, rl.getShip());
 		// enemies.add(new Enemy(rl.getGreenEnemy(), rl.getRedDeath()));
 	}
 
@@ -99,9 +98,6 @@ public class Engine {
 
 	// Moves the enemies and shots
 	private void move() {
-
-		sn.addDistance();
-		p.addDistance();
 		if (enemies != null) {
 			for (int i = 0; i < enemies.size(); i++) {
 				enemies.get(i).move(speed);

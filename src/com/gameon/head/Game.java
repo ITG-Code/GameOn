@@ -55,7 +55,6 @@ public class Game extends Applet implements Runnable {
 		// System.out.println(inputs);
 		g.drawString(pressedKeys, 200, 200);
 		engine.getPlayer().draw(g);
-		engine.getSuperNova().draw(g);
 
 		for (int i = 0; i < engine.getEnemies().size(); i++) {
 			engine.getEnemies().get(i).draw(g);
