@@ -98,7 +98,7 @@ public class Engine {
 
 	// Moves the enemies and shots
 	private void move() {
-		if (enemies != null) {
+		if (enemies != null) {	
 			for (int i = 0; i < enemies.size(); i++) {
 				enemies.get(i).move(speed);
 			}
